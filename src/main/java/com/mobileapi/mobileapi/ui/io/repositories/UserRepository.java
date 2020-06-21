@@ -1,4 +1,4 @@
-package com.mobileapi.mobileapi.repository;
+package com.mobileapi.mobileapi.ui.io.repositories;
 
 import com.mobileapi.mobileapi.ui.io.entity.UserEntity;
 

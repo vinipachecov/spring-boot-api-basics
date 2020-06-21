@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mobileapi.mobileapi.SpringApplicationContext;
+import com.mobileapi.mobileapi.service.UserService;
+import com.mobileapi.mobileapi.shared.dto.UserDto;
 import com.mobileapi.mobileapi.ui.model.request.UserLoginRequestModel;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -52,6 +55,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         String userName = ((User) authResult.getPrincipal()).getUsername();
+        
 
         // Builds jwt
         String token = Jwts.builder()
@@ -61,8 +65,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET)
         .compact();
         
+        UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImpl");
+        UserDto userDto = userService.getUser(userName);
+        
         // add to the response header
         response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+        response.addHeader("UserId", userDto.getUserId());
     }
 
 }

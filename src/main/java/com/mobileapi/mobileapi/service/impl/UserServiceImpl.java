@@ -2,11 +2,12 @@ package com.mobileapi.mobileapi.service.impl;
 
 import java.util.ArrayList;
 
-import com.mobileapi.mobileapi.repository.UserRepository;
+
 import com.mobileapi.mobileapi.service.UserService;
 import com.mobileapi.mobileapi.shared.Utils;
 import com.mobileapi.mobileapi.shared.dto.UserDto;
 import com.mobileapi.mobileapi.ui.io.entity.UserEntity;
+import com.mobileapi.mobileapi.ui.io.repositories.UserRepository;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,17 @@ public class UserServiceImpl implements UserService {
             userEntity.getEncryptedPassword(),
             new ArrayList<>()
         );
+	}
+
+	@Override
+	public UserDto getUser(String email) {
+        UserEntity userEntity =  userRepository.findByEmail(email);
+        
+        if (userEntity != null ) throw new UsernameNotFoundException(email);
+
+        UserDto returnValue = new UserDto();
+        BeanUtils.copyProperties(userEntity, returnValue);     
+		return returnValue;
 	}
     
 }
