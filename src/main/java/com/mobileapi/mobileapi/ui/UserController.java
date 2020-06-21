@@ -22,7 +22,7 @@ public class UserController {
     UserService userService;
 
         @GetMapping
-        public String getUser(@RequestParam String param) {            
+        public String getUser() {            
             return "hello world";
         }
 
