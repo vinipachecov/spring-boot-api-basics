@@ -1,5 +1,7 @@
 package com.mobileapi.mobileapi;
 
+import com.mobileapi.mobileapi.security.AppProperties;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,12 +14,19 @@ public class MobileApiApplication {
 		SpringApplication.run(MobileApiApplication.class, args);
 	}
 
-	@Bean public BCryptPasswordEncoder bCryptPasswordEncoder() {
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean SpringApplicationContext springApplicationContext() {
+	@Bean
+	SpringApplicationContext springApplicationContext() {
 		return new SpringApplicationContext();
+	}
+
+	@Bean(name = "AppProperties")
+	public AppProperties getAppProperties() {
+		return new AppProperties();
 	}
 
 }
