@@ -1,9 +1,11 @@
 package com.mobileapi.mobileapi.ui;
 
+import com.mobileapi.mobileapi.exceptions.UserServiceException;
 import com.mobileapi.mobileapi.service.UserService;
 import com.mobileapi.mobileapi.shared.dto.UserDto;
 import com.mobileapi.mobileapi.ui.io.entity.UserEntity;
 import com.mobileapi.mobileapi.ui.model.request.UserDetailsRequestModel;
+import com.mobileapi.mobileapi.ui.model.response.ErrorMessages;
 import com.mobileapi.mobileapi.ui.model.response.UserRest;
 
 import org.springframework.beans.BeanUtils;
@@ -40,8 +42,11 @@ public class UserController {
 
     @PostMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, consumes = {
             MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-    public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) {
+    public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) throws Exception {
         UserRest returnValue = new UserRest();
+
+        if (userDetails.getFirstName().isEmpty())
+            throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(userDetails, userDto);
 
