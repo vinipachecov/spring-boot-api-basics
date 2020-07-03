@@ -3,7 +3,6 @@ package com.mobileapi.mobileapi.ui;
 import com.mobileapi.mobileapi.exceptions.UserServiceException;
 import com.mobileapi.mobileapi.service.UserService;
 import com.mobileapi.mobileapi.shared.dto.UserDto;
-import com.mobileapi.mobileapi.ui.io.entity.UserEntity;
 import com.mobileapi.mobileapi.ui.model.request.UserDetailsRequestModel;
 import com.mobileapi.mobileapi.ui.model.response.ErrorMessages;
 import com.mobileapi.mobileapi.ui.model.response.UserRest;
@@ -11,7 +10,6 @@ import com.mobileapi.mobileapi.ui.model.response.UserRest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,13 +57,13 @@ public class UserController {
 	@PutMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_XML_VALUE,
 					MediaType.APPLICATION_JSON_VALUE })
-	public UserRest updateUser(@PathVariable String id, @RequestBody UserDetails userDetails) {
+	public UserRest updateUser(@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails) {
 		UserRest returnValue = new UserRest();
 
 		UserDto userDto = new UserDto();
 		BeanUtils.copyProperties(userDetails, userDto);
 
-		UserDto updatedUser = userService.updateUser(userDto);
+		UserDto updatedUser = userService.updateUser(id, userDto);
 		BeanUtils.copyProperties(updatedUser, returnValue);
 
 		return returnValue;
