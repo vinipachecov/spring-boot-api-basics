@@ -2,11 +2,13 @@ package com.mobileapi.mobileapi.service.impl;
 
 import java.util.ArrayList;
 
+import com.mobileapi.mobileapi.exceptions.UserServiceException;
 import com.mobileapi.mobileapi.service.UserService;
 import com.mobileapi.mobileapi.shared.Utils;
 import com.mobileapi.mobileapi.shared.dto.UserDto;
 import com.mobileapi.mobileapi.ui.io.entity.UserEntity;
 import com.mobileapi.mobileapi.ui.io.repositories.UserRepository;
+import com.mobileapi.mobileapi.ui.model.response.ErrorMessages;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +77,24 @@ public class UserServiceImpl implements UserService {
 
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(userEntity, returnValue);
+        return returnValue;
+    }
+
+    @Override
+    public UserDto updateUser(String id, UserDto userDto) {
+        UserEntity userEntity = userRepository.findByUserId(id);
+
+        if (userEntity == null)
+            throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+
+        UserDto returnValue = new UserDto();
+
+        userEntity.setFirstName(userDto.getFirstName());
+        userEntity.setLastName(userDto.getLastName());
+
+        UserEntity updatedUser = userRepository.save(userEntity);
+
+        BeanUtils.copyProperties(updatedUser, returnValue);
         return returnValue;
     }
 
