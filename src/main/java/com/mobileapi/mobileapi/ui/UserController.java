@@ -1,6 +1,8 @@
 package com.mobileapi.mobileapi.ui;
 
 import java.rmi.server.Operation;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mobileapi.mobileapi.exceptions.UserServiceException;
 import com.mobileapi.mobileapi.service.UserService;
@@ -12,6 +14,7 @@ import com.mobileapi.mobileapi.ui.model.response.RequestOperationName;
 import com.mobileapi.mobileapi.ui.model.response.RequestOperationStatus;
 import com.mobileapi.mobileapi.ui.model.response.UserRest;
 
+import org.apache.catalina.mbeans.UserMBean;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("users")
@@ -80,6 +84,22 @@ public class UserController {
 		returnValue.setOperationName(RequestOperationName.DELETE.name());
 		userService.deleteUser(id);
 		returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+		return returnValue;
+	}
+
+	@GetMapping(path = "/")
+	public List<UserRest> getUsers(@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "limit", defaultValue = "5") int limit) {
+		List<UserRest> returnValue = new ArrayList<>();
+
+		List<UserDto> users = userService.getUsers(page, limit);
+
+		for (UserDto userDto : users) {
+			UserRest userModel = new UserRest();
+			BeanUtils.copyProperties(userDto, userModel);
+			returnValue.add(userModel);
+		}
+
 		return returnValue;
 	}
 
