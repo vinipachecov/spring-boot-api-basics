@@ -98,4 +98,14 @@ public class UserServiceImpl implements UserService {
         return returnValue;
     }
 
+    @Override
+    public void deleteUser(String id) {
+        UserEntity userEntity = userRepository.findByUserId(id);
+
+        if (userEntity == null)
+            throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+
+        userRepository.delete(userEntity);
+    }
+
 }
