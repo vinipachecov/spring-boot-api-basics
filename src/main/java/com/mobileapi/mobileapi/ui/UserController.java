@@ -1,10 +1,15 @@
 package com.mobileapi.mobileapi.ui;
 
+import java.rmi.server.Operation;
+
 import com.mobileapi.mobileapi.exceptions.UserServiceException;
 import com.mobileapi.mobileapi.service.UserService;
 import com.mobileapi.mobileapi.shared.dto.UserDto;
 import com.mobileapi.mobileapi.ui.model.request.UserDetailsRequestModel;
 import com.mobileapi.mobileapi.ui.model.response.ErrorMessages;
+import com.mobileapi.mobileapi.ui.model.response.OperationStatusModel;
+import com.mobileapi.mobileapi.ui.model.response.RequestOperationName;
+import com.mobileapi.mobileapi.ui.model.response.RequestOperationStatus;
 import com.mobileapi.mobileapi.ui.model.response.UserRest;
 
 import org.springframework.beans.BeanUtils;
@@ -69,9 +74,12 @@ public class UserController {
 		return returnValue;
 	}
 
-	@DeleteMapping
-	public String deleteUser() {
-		return "deleteing";
+	@DeleteMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public OperationStatusModel deleteUser(@PathVariable String id) {
+		OperationStatusModel returnValue = new OperationStatusModel();
+		returnValue.setOperationName(RequestOperationName.DELETE.name());
+		returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+		return returnValue;
 	}
 
 }
