@@ -1,13 +1,15 @@
 package com.mobileapi.mobileapi.ui;
 
-import java.rmi.server.Operation;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mobileapi.mobileapi.exceptions.UserServiceException;
 import com.mobileapi.mobileapi.service.UserService;
+import com.mobileapi.mobileapi.shared.dto.AddressDto;
 import com.mobileapi.mobileapi.shared.dto.UserDto;
 import com.mobileapi.mobileapi.ui.model.request.UserDetailsRequestModel;
+import com.mobileapi.mobileapi.ui.model.response.AddressRest;
 import com.mobileapi.mobileapi.ui.model.response.ErrorMessages;
 import com.mobileapi.mobileapi.ui.model.response.OperationStatusModel;
 import com.mobileapi.mobileapi.ui.model.response.RequestOperationName;
@@ -15,6 +17,9 @@ import com.mobileapi.mobileapi.ui.model.response.RequestOperationStatus;
 import com.mobileapi.mobileapi.ui.model.response.UserRest;
 
 import org.apache.catalina.mbeans.UserMBean;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -55,11 +60,12 @@ public class UserController {
 
 		if (userDetails.getFirstName().isEmpty())
 			throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
-		UserDto userDto = new UserDto();
-		BeanUtils.copyProperties(userDetails, userDto);
+
+		ModelMapper modelMapper = new ModelMapper();
+		UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 
 		UserDto createdUser = userService.createUser(userDto);
-		BeanUtils.copyProperties(createdUser, returnValue);
+		returnValue = modelMapper.map(createdUser, UserRest.class);
 		return returnValue;
 	}
 
@@ -100,6 +106,21 @@ public class UserController {
 			returnValue.add(userModel);
 		}
 
+		return returnValue;
+	}
+
+	@GetMapping(path = "/{id}/addresses", produces = { MediaType.APPLICATION_XML_VALUE,
+			MediaType.APPLICATION_JSON_VALUE })
+	public List<AddressRest> getUserAddresses(@PathVariable String id) {
+		List<AddressRest> returnValue = new ArrayList<>();
+
+		List<AddressDto> addressesDto = addressesService.getAddresses(id);
+
+		if (addressesDto != null && !addressesDto.isEmpty()) {
+			Type listType = new TypeToken<List<AddressRest>>() {
+			}.getType();
+			returnValue = new ModelMapper().map(addressesDto, listType);
+		}
 		return returnValue;
 	}
 

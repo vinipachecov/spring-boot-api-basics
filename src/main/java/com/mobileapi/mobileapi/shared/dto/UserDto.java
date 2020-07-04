@@ -1,6 +1,7 @@
 package com.mobileapi.mobileapi.shared.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class UserDto implements Serializable {
     private static final long serialVersionUID = 0156015605601560156L;
@@ -12,7 +13,8 @@ public class UserDto implements Serializable {
     private String password;
     private String encryptedPassword;
     private String emailVerificationToken;
-    private Boolean emailVerificationStatus = false;            
+    private Boolean emailVerificationStatus = false;
+    private List<AddressDto> addresses;
 
     /**
      * @return long return the id
@@ -138,6 +140,27 @@ public class UserDto implements Serializable {
      */
     public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
         this.emailVerificationStatus = emailVerificationStatus;
+    }
+
+    /**
+     * @return Boolean return the emailVerificationStatus
+     */
+    public Boolean isEmailVerificationStatus() {
+        return emailVerificationStatus;
+    }
+
+    /**
+     * @return List<AddressDTO> return the addresses
+     */
+    public List<AddressDto> getAddresses() {
+        return addresses;
+    }
+
+    /**
+     * @param addresses the addresses to set
+     */
+    public void setAddresses(List<AddressDto> addresses) {
+        this.addresses = addresses;
     }
 
 }

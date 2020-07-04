@@ -1,11 +1,13 @@
 package com.mobileapi.mobileapi.ui.model.response;
 
+import java.util.List;
+
 public class UserRest {
-    private String userId;     
-    private String firstName;     
-    private String lastName;     
-    private String email;   
-    
+    private String userId;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private List<AddressRest> addresses;
 
     /**
      * @return String return the userId
@@ -61,6 +63,20 @@ public class UserRest {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return List<AddressRest> return the addresses
+     */
+    public List<AddressRest> getAddresses() {
+        return addresses;
+    }
+
+    /**
+     * @param addresses the addresses to set
+     */
+    public void setAddresses(List<AddressRest> addresses) {
+        this.addresses = addresses;
     }
 
 }

@@ -3,14 +3,18 @@ package com.mobileapi.mobileapi.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.modelmbean.ModelMBean;
+
 import com.mobileapi.mobileapi.exceptions.UserServiceException;
 import com.mobileapi.mobileapi.service.UserService;
 import com.mobileapi.mobileapi.shared.Utils;
+import com.mobileapi.mobileapi.shared.dto.AddressDto;
 import com.mobileapi.mobileapi.shared.dto.UserDto;
 import com.mobileapi.mobileapi.ui.io.entity.UserEntity;
 import com.mobileapi.mobileapi.ui.io.repositories.UserRepository;
 import com.mobileapi.mobileapi.ui.model.response.ErrorMessages;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,18 +40,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto user) {
-        UserEntity userEntity = new UserEntity();
 
         if (userRepository.findByEmail(user.getEmail()) != null)
             throw new RuntimeException("Record already exists");
 
-        BeanUtils.copyProperties(user, userEntity);
+        // look through list of addresses
+        for (int i = 0; i < user.getAddresses().size(); i++) {
+            AddressDto address = user.getAddresses().get(i);
+            address.setUserDetails(user);
+            address.setAddressId(utils.generateAddressId(30));
+            user.getAddresses().set(i, address);
+        }
+
+        ModelMapper modelMapper = new ModelMapper();
+        UserEntity userEntity = modelMapper.map(user, UserEntity.class);
+
         userEntity.setUserId(utils.generateUserId(30));
         userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         UserEntity storedUserDetails = userRepository.save(userEntity);
-        UserDto returnValue = new UserDto();
-        BeanUtils.copyProperties(storedUserDetails, returnValue);
+
+        UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
         return returnValue;
     }
 
