@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mobileapi.mobileapi.exceptions.UserServiceException;
+import com.mobileapi.mobileapi.service.AddressService;
 import com.mobileapi.mobileapi.service.UserService;
 import com.mobileapi.mobileapi.shared.dto.AddressDto;
 import com.mobileapi.mobileapi.shared.dto.UserDto;
@@ -39,6 +40,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
 	@Autowired
 	UserService userService;
+
+	@Autowired
+	AddressService addressService;
 
 	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public UserRest getUser(@PathVariable String id) {
@@ -114,7 +118,7 @@ public class UserController {
 	public List<AddressRest> getUserAddresses(@PathVariable String id) {
 		List<AddressRest> returnValue = new ArrayList<>();
 
-		List<AddressDto> addressesDto = addressesService.getAddresses(id);
+		List<AddressDto> addressesDto = addressService.getAddresses(id);
 
 		if (addressesDto != null && !addressesDto.isEmpty()) {
 			Type listType = new TypeToken<List<AddressRest>>() {

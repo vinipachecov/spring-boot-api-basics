@@ -13,6 +13,7 @@ import com.mobileapi.mobileapi.shared.dto.AddressDto;
 import com.mobileapi.mobileapi.shared.dto.UserDto;
 import com.mobileapi.mobileapi.ui.io.entity.AddressEntity;
 import com.mobileapi.mobileapi.ui.io.entity.UserEntity;
+import com.mobileapi.mobileapi.ui.io.repositories.AddressRepository;
 import com.mobileapi.mobileapi.ui.io.repositories.UserRepository;
 import com.mobileapi.mobileapi.ui.model.response.ErrorMessages;
 
