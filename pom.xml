@@ -5,14 +5,15 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.1.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.3.1.RELEASE</version>		
+		<relativePath/> <!-- lookup parent from repository -->		
 	</parent>
 	<groupId>com.mobile-api</groupId>
 	<artifactId>mobile-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mobile-api</name>
+	<name>mobile-api</name>	
 	<description>Demo project for Spring Boot</description>
+	<packaging>war</packaging>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -62,6 +63,19 @@
     		<artifactId>jackson-dataformat-xml</artifactId>    	
 		</dependency>
 
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-tomcat</artifactId>  
+			<scope>provided</scope>  	
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.3.0</version>
+		</dependency>
 
 
 		<dependency>
