@@ -18,10 +18,8 @@ import com.mobileapi.mobileapi.ui.model.response.RequestOperationName;
 import com.mobileapi.mobileapi.ui.model.response.RequestOperationStatus;
 import com.mobileapi.mobileapi.ui.model.response.UserRest;
 
-import org.apache.catalina.mbeans.UserMBean;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -32,6 +30,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -165,6 +164,23 @@ public class UserController {
 				.withSelfRel();
 
 		return EntityModel.of(returnValue, Arrays.asList(userAddressesLink, userLink, selfLink));
+	}
+
+	@GetMapping(value = "/email-verification", produces = { MediaType.APPLICATION_XML_VALUE,
+			MediaType.APPLICATION_JSON_VALUE })
+	public OperationStatusModel verifyEmailToken(@RequestParam(value = "token") String token) {
+		OperationStatusModel returValue = new OperationStatusModel();
+		returValue.setOperationName(RequestOperationName.VERIFY_EMAIL.name());
+
+		boolean isVerfied = userService.verifyEmailToken(token);
+
+		if (isVerfied) {
+			returValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+		} else {
+			returValue.setOperationResult(RequestOperationStatus.ERROR.name());
+		}
+
+		return returValue;
 	}
 
 }
