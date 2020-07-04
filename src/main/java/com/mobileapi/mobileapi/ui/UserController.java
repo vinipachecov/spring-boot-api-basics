@@ -88,7 +88,7 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/")
-	public List<UserRest> getUsers(@RequestParam(value = "page", defaultValue = "1") int page,
+	public List<UserRest> getUsers(@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "limit", defaultValue = "5") int limit) {
 		List<UserRest> returnValue = new ArrayList<>();
 
