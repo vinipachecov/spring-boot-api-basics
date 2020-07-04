@@ -1,5 +1,7 @@
 package com.mobileapi.mobileapi.ui.model.response;
 
+import org.springframework.hateoas.RepresentationModel;
+
 public class AddressRest {
     private long id;
     private String addressId;
@@ -19,7 +21,7 @@ public class AddressRest {
     /**
      * @param id the id to set
      */
-    public void setId(long id) {
+    public void setId(final long id) {
         this.id = id;
     }
 
@@ -33,7 +35,7 @@ public class AddressRest {
     /**
      * @param addressId the addressId to set
      */
-    public void setAddressId(String addressId) {
+    public void setAddressId(final String addressId) {
         this.addressId = addressId;
     }
 
@@ -47,7 +49,7 @@ public class AddressRest {
     /**
      * @param city the city to set
      */
-    public void setCity(String city) {
+    public void setCity(final String city) {
         this.city = city;
     }
 
@@ -61,7 +63,7 @@ public class AddressRest {
     /**
      * @param country the country to set
      */
-    public void setCountry(String country) {
+    public void setCountry(final String country) {
         this.country = country;
     }
 
@@ -75,7 +77,7 @@ public class AddressRest {
     /**
      * @param streetName the streetName to set
      */
-    public void setStreetName(String streetName) {
+    public void setStreetName(final String streetName) {
         this.streetName = streetName;
     }
 
@@ -89,7 +91,7 @@ public class AddressRest {
     /**
      * @param postalCode the postalCode to set
      */
-    public void setPostalCode(String postalCode) {
+    public void setPostalCode(final String postalCode) {
         this.postalCode = postalCode;
     }
 
@@ -103,7 +105,7 @@ public class AddressRest {
     /**
      * @param type the type to set
      */
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 

@@ -2,6 +2,7 @@ package com.mobileapi.mobileapi.ui;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.mobileapi.mobileapi.exceptions.UserServiceException;
@@ -23,6 +24,9 @@ import org.modelmapper.TypeToken;
 import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -130,7 +134,7 @@ public class UserController {
 
 	@GetMapping(path = "/{userId}/addresses/{addressId}", produces = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_VALUE })
-	public AddressRest getUserAddressById(@PathVariable String userId, @PathVariable String addressId) {
+	public EntityModel<AddressRest> getUserAddressById(@PathVariable String userId, @PathVariable String addressId) {
 		AddressRest returnValue = new AddressRest();
 
 		AddressDto addressesDto = addressService.getAddressById(addressId);
@@ -138,7 +142,15 @@ public class UserController {
 		if (addressesDto != null) {
 			returnValue = new ModelMapper().map(addressesDto, AddressRest.class);
 		}
-		return returnValue;
+
+		// http://localhost:8080/userId/<userId>
+		Link userLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(userId).withRel("user");
+		Link userAddressesLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(userId).slash("addresses")
+				.withRel("addresses");
+		Link selfLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(userId).slash("addresses")
+				.slash("addresses").slash(addressId).withSelfRel();
+
+		return EntityModel.of(returnValue, Arrays.asList(userAddressesLink, userLink, selfLink));
 	}
 
 }
