@@ -143,12 +143,14 @@ public class UserController {
 			returnValue = new ModelMapper().map(addressesDto, AddressRest.class);
 		}
 
-		// http://localhost:8080/userId/<userId>
+		// HATEOAS Links
 		Link userLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(userId).withRel("user");
-		Link userAddressesLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(userId).slash("addresses")
-				.withRel("addresses");
-		Link selfLink = WebMvcLinkBuilder.linkTo(UserController.class).slash(userId).slash("addresses")
-				.slash("addresses").slash(addressId).withSelfRel();
+		Link userAddressesLink = WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUserAddresses(userId)).withRel("addresses");
+
+		Link selfLink = WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(UserController.class).getUserAddressById(userId, addressId))
+				.withSelfRel();
 
 		return EntityModel.of(returnValue, Arrays.asList(userAddressesLink, userLink, selfLink));
 	}
