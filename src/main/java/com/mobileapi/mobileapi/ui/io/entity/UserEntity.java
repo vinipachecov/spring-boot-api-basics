@@ -147,7 +147,7 @@ public class UserEntity implements Serializable {
     /**
      * @return Boolean return the emailVerificationStatus
      */
-    public Boolean isEmailVerificationStatus() {
+    public Boolean getEmailVerificationStatus() {
         return emailVerificationStatus;
     }
 
