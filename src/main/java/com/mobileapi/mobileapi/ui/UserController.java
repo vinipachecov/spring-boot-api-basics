@@ -10,6 +10,7 @@ import com.mobileapi.mobileapi.service.AddressService;
 import com.mobileapi.mobileapi.service.UserService;
 import com.mobileapi.mobileapi.shared.dto.AddressDto;
 import com.mobileapi.mobileapi.shared.dto.UserDto;
+import com.mobileapi.mobileapi.ui.model.request.PasswordResetRequestModel;
 import com.mobileapi.mobileapi.ui.model.request.UserDetailsRequestModel;
 import com.mobileapi.mobileapi.ui.model.response.AddressRest;
 import com.mobileapi.mobileapi.ui.model.response.ErrorMessages;
@@ -18,6 +19,7 @@ import com.mobileapi.mobileapi.ui.model.response.RequestOperationName;
 import com.mobileapi.mobileapi.ui.model.response.RequestOperationStatus;
 import com.mobileapi.mobileapi.ui.model.response.UserRest;
 
+import org.hibernate.event.spi.ResolveNaturalIdEvent;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.BeanUtils;
@@ -181,6 +183,22 @@ public class UserController {
 		}
 
 		return returValue;
+	}
+
+	@PostMapping(value = "/password-reset-request", produces = { MediaType.APPLICATION_XML_VALUE,
+			MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_XML_VALUE,
+					MediaType.APPLICATION_JSON_VALUE })
+	public OperationStatusModel resetPassword(@RequestBody PasswordResetRequestModel PasswordResetRequestModel) {
+		OperationStatusModel returnValue = new OperationStatusModel();
+		boolean operationResult = userService.requestPasswordReset(PasswordResetRequestModel.getEmail());
+		returnValue.setOperationName(RequestOperationName.REQUEST_PASSWORD_RESET.name());
+		returnValue.setOperationResult(RequestOperationStatus.ERROR.name());
+
+		if (operationResult) {
+			returnValue.setOperationName(RequestOperationStatus.SUCCESS.name());
+		}
+
+		return returnValue;
 	}
 
 }
