@@ -7,10 +7,13 @@ import javax.management.modelmbean.ModelMBean;
 
 import com.mobileapi.mobileapi.exceptions.UserServiceException;
 import com.mobileapi.mobileapi.service.UserService;
+import com.mobileapi.mobileapi.shared.AmazonSES;
 import com.mobileapi.mobileapi.shared.Utils;
 import com.mobileapi.mobileapi.shared.dto.AddressDto;
 import com.mobileapi.mobileapi.shared.dto.UserDto;
+import com.mobileapi.mobileapi.ui.io.entity.PasswordResetTokenEntity;
 import com.mobileapi.mobileapi.ui.io.entity.UserEntity;
+import com.mobileapi.mobileapi.ui.io.repositories.PasswordResetTokenRepository;
 import com.mobileapi.mobileapi.ui.io.repositories.UserRepository;
 import com.mobileapi.mobileapi.ui.model.response.ErrorMessages;
 
@@ -38,11 +41,17 @@ public class UserServiceImpl implements UserService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Autowired
+    AmazonSES amazonSES;
+
     @Override
     public UserDto createUser(UserDto user) {
 
         if (userRepository.findByEmail(user.getEmail()) != null)
-            throw new RuntimeException("Record already exists");
+            throw new UserServiceException("Record already exists");
 
         // look through list of addresses
         for (int i = 0; i < user.getAddresses().size(); i++) {
@@ -64,6 +73,10 @@ public class UserServiceImpl implements UserService {
         UserEntity storedUserDetails = userRepository.save(userEntity);
 
         UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
+
+        // Send an email message to user to verify their email address
+        // new AmazonSES().verifyEmail(returnValue);
+
         return returnValue;
     }
 
@@ -166,6 +179,29 @@ public class UserServiceImpl implements UserService {
                 return returnValue;
             }
         }
+        return returnValue;
+    }
+
+    @Override
+    public boolean requestPasswordReset(String email) {
+        boolean returnValue = false;
+
+        UserEntity userEntity = userRepository.findByEmail(email);
+
+        if (userEntity == null) {
+            return returnValue;
+        }
+        String token = new Utils().generatePasswordResetToken(userEntity.getUserId());
+
+        PasswordResetTokenEntity passwordResetTokenEntity = new PasswordResetTokenEntity();
+        passwordResetTokenEntity.setToken(token);
+        passwordResetTokenEntity.setUserDetails(userEntity);
+        passwordResetTokenRepository.save(passwordResetTokenEntity);
+
+        // returnValue = new
+        // AmazonSES().sendPasswordResetRequest(userEntity.getFirstName(),
+        // userEntity.getEmail(), token);
+
         return returnValue;
     }
 
