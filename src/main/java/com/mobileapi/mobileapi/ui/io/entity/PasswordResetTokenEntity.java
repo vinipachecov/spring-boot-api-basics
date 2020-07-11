@@ -2,11 +2,13 @@ package com.mobileapi.mobileapi.ui.io.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+@Entity(name = "password_reset_tokens")
 public class PasswordResetTokenEntity implements Serializable {
 
     /**
