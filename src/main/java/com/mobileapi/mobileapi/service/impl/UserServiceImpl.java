@@ -41,8 +41,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    PasswordResetTokenRepository passwordResetTokenRepository;
+    // @Autowired
+    // PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Autowired
     AmazonSES amazonSES;
@@ -196,7 +196,7 @@ public class UserServiceImpl implements UserService {
         PasswordResetTokenEntity passwordResetTokenEntity = new PasswordResetTokenEntity();
         passwordResetTokenEntity.setToken(token);
         passwordResetTokenEntity.setUserDetails(userEntity);
-        passwordResetTokenRepository.save(passwordResetTokenEntity);
+        // passwordResetTokenRepository.save(passwordResetTokenEntity);
 
         // returnValue = new
         // AmazonSES().sendPasswordResetRequest(userEntity.getFirstName(),
