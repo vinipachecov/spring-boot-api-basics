@@ -1,0 +1,11 @@
+/Users/viniciuspvieira/programming/spring-restful-udemy/spring-api/src/main/java/com/mobileapi/mobileapi/shared/Utils.java
+/Users/viniciuspvieira/programming/spring-restful-udemy/spring-api/src/main/java/com/mobileapi/mobileapi/MobileApiApplication.java
+/Users/viniciuspvieira/programming/spring-restful-udemy/spring-api/src/main/java/com/mobileapi/mobileapi/ui/UserController.java
+/Users/viniciuspvieira/programming/spring-restful-udemy/spring-api/src/main/java/com/mobileapi/mobileapi/shared/dto/UserDto.java
+/Users/viniciuspvieira/programming/spring-restful-udemy/spring-api/src/main/java/com/mobileapi/security/WebSecurity.java
+/Users/viniciuspvieira/programming/spring-restful-udemy/spring-api/src/main/java/com/mobileapi/mobileapi/ui/model/request/UserDetailsRequestModel.java
+/Users/viniciuspvieira/programming/spring-restful-udemy/spring-api/src/main/java/com/mobileapi/mobileapi/service/impl/UserServiceImpl.java
+/Users/viniciuspvieira/programming/spring-restful-udemy/spring-api/src/main/java/com/mobileapi/mobileapi/ui/io/entity/UserEntity.java
+/Users/viniciuspvieira/programming/spring-restful-udemy/spring-api/src/main/java/com/mobileapi/mobileapi/service/UserService.java
+/Users/viniciuspvieira/programming/spring-restful-udemy/spring-api/src/main/java/com/mobileapi/mobileapi/repository/UserRepository.java
+/Users/viniciuspvieira/programming/spring-restful-udemy/spring-api/src/main/java/com/mobileapi/mobileapi/ui/model/response/UserRest.java
